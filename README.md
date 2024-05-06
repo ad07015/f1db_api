@@ -6,3 +6,7 @@ for Formula 1 historic data
 The database is kindly provided by Marcel Overdijk: https://github.com/marceloverdijk
 
 Database Github project: https://github.com/f1db/f1db
+
+### TODO
+- [ ] Introduce Swagger
+- [ ] Introduce Flyway
