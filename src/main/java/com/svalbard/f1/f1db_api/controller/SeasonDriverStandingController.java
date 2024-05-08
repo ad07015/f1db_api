@@ -1,32 +1,28 @@
 package com.svalbard.f1.f1db_api.controller;
 
 import com.svalbard.f1.f1db_api.model.SeasonDriverStanding;
-import com.svalbard.f1.f1db_api.service.SeasonDriverStandingService;
-import org.springframework.http.HttpStatus;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RestController
-@RequestMapping("/driver-standing")
-public class SeasonDriverStandingController {
+public interface SeasonDriverStandingController {
 
-    private final SeasonDriverStandingService service;
-
-    public SeasonDriverStandingController(SeasonDriverStandingService service) {
-        this.service = service;
-    }
-
-    @GetMapping(value = "/{year}", produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<SeasonDriverStanding>> getDriverStandingByYear(@PathVariable Integer year) {
-        var driverStandingsByYear = service.getDriverStandingsByYear(year);
-
-        return new ResponseEntity<>(driverStandingsByYear, HttpStatus.OK);
-    }
+    @Operation(summary = "Get driver standings by season")
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "200", description = "Found driver standings for a given season",
+        content = { @Content(mediaType = APPLICATION_JSON_VALUE,
+        schema = @Schema(implementation = SeasonDriverStanding.class)) }),
+    @ApiResponse(responseCode = "400", description = "Invalid season supplied",
+        content = @Content),
+    @ApiResponse(responseCode = "404", description = "Driver standings not found for given season",
+        content = @Content) })
+    ResponseEntity<List<SeasonDriverStanding>> getDriverStandingByYear(@PathVariable Integer year);
 }
